@@ -257,20 +257,10 @@ return /******/ (function(modules) { // webpackBootstrap
 			if (this.props.isValidDate) {
 				updatedState.viewDate = updatedState.viewDate || this.state.viewDate;
 
-				var limitDateValidation = function () {
-					return updatedState.viewDate.isBefore(
-						updatedState.viewDate.clone()
-						.add(1, 'month').endOf('month')
-					) &&  updatedState.viewDate.isAfter(
-						updatedState.viewDate.clone()
-						.subtract(1, 'month').startOf('month')
-					);
-
-					console.log('limitDateValidation');
-				}
-
-				while (!this.props.isValidDate(updatedState.viewDate) && limitDateValidation()) {
+				var maxIterations = 45;
+				while (!this.props.isValidDate(updatedState.viewDate) && maxIterations !== 0) {
 					updatedState.viewDate = updatedState.viewDate.add(1, 'day');
+					maxIterations--;
 				}
 			}
 			this.setState( updatedState );
