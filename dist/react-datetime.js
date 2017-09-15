@@ -1,5 +1,5 @@
 /*
-react-datetime v2.10.0
+react-datetime v2.10.1
 https://github.com/YouCanBookMe/react-datetime
 MIT: https://github.com/YouCanBookMe/react-datetime/raw/master/LICENSE
 */
@@ -256,7 +256,20 @@ return /******/ (function(modules) { // webpackBootstrap
 			//we should only show a valid date if we are provided a isValidDate function.
 			if (this.props.isValidDate) {
 				updatedState.viewDate = updatedState.viewDate || this.state.viewDate;
-				while (!this.props.isValidDate(updatedState.viewDate)) {
+
+				var limitDateValidation = function () {
+					return updatedState.viewDate.isBefore(
+						updatedState.viewDate.clone()
+						.add(1, 'month').endOf('month')
+					) &&  updatedState.viewDate.isAfter(
+						updatedState.viewDate.clone()
+						.subtract(1, 'month').startOf('month')
+					);
+
+					console.log('limitDateValidation');
+				}
+
+				while (!this.props.isValidDate(updatedState.viewDate) && limitDateValidation()) {
 					updatedState.viewDate = updatedState.viewDate.add(1, 'day');
 				}
 			}
